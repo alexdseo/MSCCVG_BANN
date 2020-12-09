@@ -1,0 +1,78 @@
+BANN paper
+ 
+INTRO
+-Bayesian Neural Networks (BNNs) generally refer to a class of algorithms that treat neural network models in a Bayesian manner
+  - Well suited for Uncertainty estimates
+  - Similar to DGP -> deep probabilistic non-parametric model
+  - Uncertainty estimated provided through the posterior distribution which is very hard to calculate, both for DGP and BNN
+     - need to slove the inverse of kernel matrix -> a problem for large datasets
+        - to overcome this problem there are few options including option that needs few assumptions
+        - recently by using doubly stochastic variational(+mini batch training, backpropagation) inference we do not need to force independence or Gaussianity assumptions
+           - this approach actually produces a posterior approximation that belongs to a broad class of BNNs which have kernel-type structure
+  - Beyond uncertainty estimate, Intepretability
+     -impose assumptions on the structure of the function class (ex) additive structure, hierarchical structure)
+
+- Goal : Designing deep neural network with structure and interpretability in mind, with easily amenable to uncertainty estimation!
+
+  - Assumption on the structure that will used : Computational Skeleton
+     - Structure used to study the relationship between neural network and kernels
+     - We will use this to design BNN block by block that can efficiently approximate the posterior of DGP
+         - offers flexibility to choose between different structure and uncertainty estimation schemes
+         - retain all empirical properties ( Mini-batch training...), provide deeper understanding of the relation between BNN and DGP
+
+ - Statistical interactions :  the simultaneous inﬂuence of several features on the outcome is not additive and the features may jointly affect the outcome
+    -Interpretability : Understanding how predictors influence the outcome.
+    - ANOVA decomposition for detect statistical interaction
+
+- DGP and variational inference that are used to approximate the posterior distribution
+   - What is GP and DGP?
+     -
+   - VI(Variation inference) for Bayesian models
+     -
+
+BUILDING BNN with computational skeleton
+- What is a computation skeletion?
+  - Feed-forward computation structure from the inputs to the outputs.
+  - Multi-layer graph, two layer fully connected NN
+- What are blocks?  
+  - function block(allows every node in computational skeleton to replicate 'd' times) that helps defining Bayesian priors and posteriors
+     - one layer NN, takes inputs and output a d-dimension vector f
+  - Random feature block
+     - used to consturct random feature approximations for kernels to leverage the expressive power of DGP
+     - one layer NN with random weights (W), takes inputs and output a r-dimension vector
+
+- Constructing BNN with FB and RB and computational skeleton
+   - Input : Computational skeletion / Output : Deep BNN / Activation function : sigma
+   - given computation skeleton, we construct BNN by sequentially replacing edges in CS with combination of FB and RB from bottom to top
+
+- Prior and posterior approximation for BNN
+   - Use variational inference to approximate its posterior, then the optimization of ELBO can be achieved with mini-batch training and backpropagation
+
+- Relationshp between BNN and DGP
+   - BNN is a VI approximation for a DGP posterior with inducing points 
+   - for issue of not covering all possible kernels with restriction via activation funtion, we replace RB with IPB(inducing points block)
+       - Then, derived variational posterior for BNN can now be viewed as posterior approximation for a general DGP
+
+So far..  BNN can be seen as approximation for DGP posterior and can be trained efficiently
+
+- BNN is extremely flexible
+   - With some changes such as allow using sequential RBs, allow using mixture of tow pmf for posterior, allow using other forms of priors
+      BNN can be changed to MC dropout, Deep random features and Deep kernel learning.
+        - Although it could lead to overfitting
+
+- Statistical inference through AddNN : BANN
+   - Using Additive structure in BNN to detect interactions for interpretability
+      - we can define interaction through ANOVA decomposition
+      - Design an additive NN to partially represent the ANOVA decompostion, using NN with the first layer regularized by group Lasso type penalty
+   - New additive neural network computational skeleton - only specific design of the first layer for variable selection, which is FB with prior on the weights
+
+- Experiments
+   -Prediction accuracy and interaction detection (AddNN, BNN, BART(Bayesian additive regression tree) and NID(Neural interaction detection))
+     - Using different functions for 1 response and 10 demensional inputs, iid generated from uniform distributon, for data.
+     - Prediction performance(Among 4 models) is similar while AddNN is much more compact design with just ~500 edges
+     - For interaction detection comparison between AddNN and NID, AddNN outperforms.
+   - Uncertainty and interpretability
+      -For all four methods from AddNN(MC dropout, RF, DKL and DRF), corrcting yields interactions and main effects.
+      - Can plot the average interaction and uncertainty using heatmap, which is rare ability for deep NN that can be very useful for interpretability
+
+ 
