@@ -1,2 +1,2 @@
-# MSCCVG_BANN-with-NTK
+# MSCCVG_BANN
 
