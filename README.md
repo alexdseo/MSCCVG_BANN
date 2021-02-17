@@ -1,2 +1,6 @@
 # MSCCVG_BANN
 
+> Abstract
+
+Understanding the flow of information in Deep Neural Networks (DNNs) and identifying which features in the input data are influencing the output is a challenging problem that lies at the heart of modern deep learning research. We study this problem with a focus on deep probabilistic models. We describe mechanisms by which imposing structure on the function class, by a gadget called a computation skeleton, provides numerous advantages including the ability to better understand the flow of information as well as analyzing the role of statistical interactions between predictor variables (where few alternatives exist currently). Apart from enabling answering interpretability related questions, our construction
+is general enough in the following way: our assumptions on the function class being learned reveal a unified framework to understand and relate Bayesian Neural Networks (BNNs), Deep Gaussian Processes (DGPs), Deep Kernel Learning (DKL), deep random features and other topics. We provide a rigorous analysis to make these statements precise and as a special case with an eye on interpretability, we instantiate our procedure to define a Bayesian additive neural network for which we present promising numerical experiments
